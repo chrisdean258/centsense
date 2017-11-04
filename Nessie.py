@@ -12,14 +12,7 @@ class Customer:
             self.good = False
             return;
         json_data = json.loads(person.text);
-        self.ID = json_data["_id"]
-        self.first_name = json_data["first_name"]
-        self.last_name = json_data["last_name"]
-        self.zip = json_data["address"]["zip"]
-        self.street_number = json_data["address"]["street_number"]
-        self.state = json_data["address"]["state"]
-        self.city = json_data["address"]["city"]
-        self.street_name = json_data["address"]["street_name"]
+        self.parse_dict(json_data)
 
     def __init(self):
         self.good = True
@@ -34,37 +27,35 @@ class Customer:
         json_data = json.loads(people.text)
         for i, person in enumerate(json_data):
             newPerson = Customer;
-            newPerson.ID = json_data[i]["_id"]
-            newPerson.first_name = json_data[i]["first_name"]
-            newPerson.last_name = json_data[i]["last_name"]
-            newPerson.zip = json_data[i]["address"]["zip"]
-            newPerson.street_number = json_data[i]["address"]["street_number"]
-            newPerson.state = json_data[i]["address"]["state"]
-            newPerson.city = json_data[i]["address"]["city"]
-            newPerson.street_name = json_data[i]["address"]["street_name"]
+            self.parse_dict(person)
             customers.append(newPerson)
         return customers
+
+    def parse_dict(self, d):
+        self.ID = d["_id"]
+        self.first_name = d["first_name"]
+        self.last_name = d["last_name"]
+        self.zip = d["address"]["zip"]
+        self.street_number = d["address"]["street_number"]
+        self.state = d["address"]["state"]
+        self.city = d["address"]["city"]
+        self.street_name = d["address"]["street_name"]
 
 class Account:
     def __init__(self, accID):
         url = "http://api.reimaginebanking.com/accounts/{}?key={}".format(accID, apiKey)
         person = requests.get(url)
+        self.good = True
         if(person.status_code == 404):
             self.good = False
-            return;
+            return
         json_data = json.loads(person.text);
         self.accID = json_data["_id"]
-        print(self.accID)
         self.type = json_data["type"]
-        print(self.type)
         self.balance = json_data["balance"]
-        print(self.balance)
         self.nickname = json_data["nickname"]
-        print(self.nickname)
         self.rewards = json_data["rewards"]
-        print(self.rewards)
-        self.custID = json_data["custID"]
-        print(self.custID)
+        self.custID = json_data["customer_id"]
 
 
 
@@ -76,6 +67,12 @@ Account(accID)
 class Transfer:
     def __init__(self, ID):
         url = "http://api.reimaginebanking.com/accounts/{}/transfers?key={}".format(ID, apiKey)
+        transfer = requests.get(url)
+        if(transfer.status_code // 100 == 4):
+            self.goof = False
+            return
+        json_data = json.loads(transfer.text)
+        parse_dict(json_data)
 
     def parse_dict(self, d):
         self.id = d["_id"]
