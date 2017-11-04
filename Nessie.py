@@ -73,4 +73,18 @@ Account(accID)
 
 
 
+class Transfer:
+    def __init__(self, ID):
+        url = "http://api.reimaginebanking.com/accounts/{}/transfers?key={}".format(ID, apiKey)
+
+    def parse_dict(self, d):
+        self.id = d["_id"]
+        self.type = d["type"]
+        self.transaction_date = d["transaction_date"]
+        self.status = d["status"]
+        self.medium = d["medium"]
+        self.payer_id = d["payer_id"]
+        self.payee_id = d["payee_id"]
+        self.amount = d["amount"]
+        self.description = d["description"]
 
