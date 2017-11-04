@@ -5,7 +5,7 @@ apiKey = '1312ae9bf58b2fd71f6632fa9c23996e'
 
 
 
-class Account:
+class Customer:
     def __init__(self, ID):
         url = 'http://api.reimaginebanking.com/customers/{}?key={}'.format(ID,apiKey)
         person = requests.get(url)
