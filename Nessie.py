@@ -41,6 +41,9 @@ class Customer:
         self.city = d["address"]["city"]
         self.street_name = d["address"]["street_name"]
 
+    def json(self):
+        return '{ "_id": "' + self.ID + '", "first_name": "' + self.first_name + '", "last_name": "' + self.last_name + '", "address": { "street_number": "' + self.street_number + '", "street_name": "' + self.street_name + '", "city": "' + self.city + '", "state": "' + self.state + '", "zip": "' + self.zip + '" } }'
+
 class Account:
     def __init__(self, accID):
         url = "http://api.reimaginebanking.com/accounts/{}?key={}".format(accID, apiKey)
@@ -62,6 +65,9 @@ class Account:
 accID = "5828d214360f81f104553cd0"
 Account(accID)
 
+custID = "58278805360f81f10454851a"
+
+print(Customer(custID).json())
 
 
 class Transfer:
