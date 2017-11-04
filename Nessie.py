@@ -43,11 +43,9 @@ class Customer:
             newPerson.city = json_data[i]["address"]["city"]
             newPerson.street_name = json_data[i]["address"]["street_name"]
             customers.append(newPerson)
-        print(customers)
         return customers
 
 
 
 
 
-Customer.get_all()
