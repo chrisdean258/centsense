@@ -45,6 +45,31 @@ class Customer:
             customers.append(newPerson)
         return customers
 
+class Account:
+    def __init__(self, accID):
+        url = "http://api.reimaginebanking.com/accounts/{}?key={}".format(accID, apiKey)
+        person = requests.get(url)
+        if(person.status_code == 404):
+            self.good = False
+            return;
+        json_data = json.loads(person.text);
+        self.accID = json_data["_id"]
+        print(self.accID)
+        self.type = json_data["type"]
+        print(self.type)
+        self.balance = json_data["balance"]
+        print(self.balance)
+        self.nickname = json_data["nickname"]
+        print(self.nickname)
+        self.rewards = json_data["rewards"]
+        print(self.rewards)
+        self.custID = json_data["custID"]
+        print(self.custID)
+
+
+
+accID = "5828d214360f81f104553cd0"
+Account(accID)
 
 
 
