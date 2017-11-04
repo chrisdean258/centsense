@@ -60,6 +60,27 @@ class Account:
         self.rewards = json_data["rewards"]
         self.custID = json_data["customer_id"]
 
+    @staticmethod
+    def get_all():
+        accounts = []
+        url = "http://api.reimaginebanking.com/accounts?key={}".format(apiKey)
+        people = requests.get(url)
+        if(people.status_code // 400 == 4):
+            return []
+        json_data = json.loads(people.text)
+        for i, person in enumerate(json_data):
+            newPerson = Account;
+            self.parse_dict(person)
+            accounts.append(newPerson)
+        return accounts
+
+    def parse_dict(self, d):
+        self.accID = d["_id"]
+        self.type = d["type"]
+        self.balance = d["balance"]
+        self.nickname = d["nickname"]
+        self.rewards = d["rewards"]
+        self.custID = d["custID"]
 
 
 accID = "5828d214360f81f104553cd0"
