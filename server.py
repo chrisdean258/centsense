@@ -2,6 +2,8 @@ from flask import Flask
 from flask import send_file
 from flask import request
 
+import db
+
 app = Flask(__name__)
 
 server = 'localhost'
@@ -28,8 +30,14 @@ def hello_world():
 
 @app.route('/login', methods = ['POST'])
 def POST_login():
-    print(request.values)
-    return send_file('static.html')
+    password = request.values['password']
+    username = request.values['netid']
+    nesID = db.get_user(username, password)
+    if nesID == "" :
+        return send_file('index.html')
+    else:
+        return "Yay youre a valid user"
+
 
 
 
