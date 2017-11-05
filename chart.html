@@ -1,29 +1,54 @@
 <script src = JS_Dependencies/Chart.bundle.min.js></script>
-<div class="chart-container" style="position: relative; height:30vh; width:50vw">
-<canvas id="myChart" width="400" height="400"></canvas>
+<div class="chart-container" style="position: relative; height:40vh; width:50vw">
+<canvas id="line" width="400" height="200"></canvas>
+</div>
+<div class="chart-container" style="position: relative; height:40vh; width:50vw">
+<canvas id="bar" width="400" height="200"></canvas>
 </div>
 <script>
-var ctx = document.getElementById("myChart").getContext('2d');
+var line = document.getElementById("line").getContext('2d');
+var bar = document.getElementById("bar").getContext('2d');
 
-var x = [1,2,3,4];
-var y = [1,4,9,2];
+var goal = 200; //This is pulled from user
+var rand = 3; //Chooses color (0-7)
+var rand2 = 7;
+var x = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+var y = [21, 44, 71, 88, 171];//y values (do we sum them here or somehwere else?
+var goalline = [goal, goal, goal, goal, goal, goal, goal, goal, goal, goal, goal, goal];
+var colors = ['#000080', '#89cff0', '#228b22', '#98ff98', '#ffff00', '#e6e6fa', '0d98ba', '#4c516d'];
+var bgcolor = 'rgb(255,255,255,0)';
+var dashcolor = 'rgb(0 0 0)';
+var dashwidth = [25,25];
+var nodot = 0;
 
 
-var myChart = new Chart(ctx, {
+var linechart = new Chart(line, {
 	type: 'line',
 	data: {
 		labels: x,
-		xAxisID: "Temp", 
+		xAxisID: "Temp",
 		datasets: [{
 			data: y,
-			backgroundColor: [
-				'rgba(0, 99, 255, 0.2)',
-			],
+			backgroundColor: bgcolor,
+			borderColor: colors[rand],
+			borderWidth: 5,
+		},
+		{
+			data: goalline,
+			backgroundColor: bgcolor,
+			borderColor: dashcolor,
+			borderDash: dashwidth,
+			borderWidth: 2,
+			pointRadius: nodot,
+		},
+		{
+			data:[goal + 50],
+			pointRadius: nodot,
 		}]
 	},
 	options: {
 		title: {
-			display: true,
+			display: false,
 			text: "Test"
 		},
 		legend : {
@@ -31,8 +56,53 @@ var myChart = new Chart(ctx, {
 		},
 		scales: {
 			yAxes: [{
-				display: true,
-				labelString: "Y axis", 
+				scaleLabel : {
+					display: true,
+					labelString: 'Dollars',
+				},
+				ticks: {
+					beginAtZero:true
+				}
+			}]
+		}
+	 }
+});
+
+
+var barchart = new Chart(bar, {
+	type: 'bar',
+	data: {
+		labels: x,
+		datasets: [{
+			data: y,
+			backgroundColor: colors[rand2],
+			borderColor: colors[rand2],
+			borderWidth: 5,
+		},
+		{
+			type: 'line',
+			data: goalline,
+			backgroundColor: bgcolor,
+			borderColor: dashcolor,
+			borderDash: dashwidth,
+			borderWidth: 2,
+			pointRadius: nodot,
+		}]
+	},
+	options: {
+		title: {
+			display: false,
+			text: "Test"
+		},
+		legend : {
+			display: false
+		},
+		scales: {
+			yAxes: [{
+				scaleLabel : {
+					display: true,
+					labelString: 'Dollars',
+				},
 				ticks: {
 					beginAtZero:true
 				}
