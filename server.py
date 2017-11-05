@@ -3,10 +3,16 @@ from flask import send_file
 from flask import request
 
 import db
+import data
 
 app = Flask(__name__)
 
 server = 'localhost'
+
+def login_success(nesID):
+    cust_data = data.get_data(nesID)
+    return send_file("index2.html")
+
 
 @app.route('/static')
 def stat():
@@ -34,11 +40,26 @@ def POST_login():
     username = request.values['netid']
     nesID = db.get_user(username, password)
     if nesID == "" :
-        return send_file('index.html')
+        return send_file('loginfail.html')
     else:
-        return "Yay youre a valid user"
+        return login_success(nesID)
 
 
+@app.route('/css/<page>')
+def css_page(page):
+    try:
+        return send_file("/css/"+page)
+    except:
+        print("/css/"+page+" not found")
+        return ""
+
+@app.route('/js/<page>')
+def js_page(page):
+    try:
+        return send_file("/js/"+page)
+    except:
+        print("/js/"+page+" not found")
+        return ""
 
 
 

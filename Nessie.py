@@ -67,7 +67,7 @@ class Account:
             return []
         json_data = json.loads(people.text)
         for person in json_data:
-            newPerson = Account;
+            newPerson = Account("");
             self.parse_dict(person)
             accounts.append(newPerson)
         return accounts
@@ -96,14 +96,6 @@ class Account:
             rtn.append(newAccount)
         return rtn
 
-    def parse_dict(self, d):
-        self.accID = d["_id"]
-        self.type = d["type"]
-        self.balance = d["balance"]
-        self.nickname = d["nickname"]
-        self.rewards = d["rewards"]
-        self.custID = d["customer_id"]
-
     def json(self):
         return '{ "_id": "' + self.ID + '", "type": "' + self.type + '", "balance": '+str(self.balance)+ ', "nickname": "' + self.nickname + '", "rewards": ' + str(self.rewards) + ', "customer_id": "' + self.customer_id + '" }'
 
@@ -122,7 +114,7 @@ class Transfer:
         parse_dict(json_data)
 
     def parse_dict(self, d):
-        self.id = d["_id"]
+        self.ID = d["_id"]
         self.type = d["type"]
         self.transaction_date = d["transaction_date"]
         self.status = d["status"]
@@ -135,6 +127,7 @@ class Transfer:
 
     @staticmethod
     def get_by_account(custID):
+        print(custID)
         url = "http://api.reimaginebanking.com/accounts/{}/transfers?key={}".format(custID, apiKey)
         transfers = requests.get(url)
         if(transfers.status_code // 100 == 4):
@@ -157,8 +150,5 @@ class Transfer:
 
 
     def json(self):
-        return '{ "_id": "'+self.id+'", "type": "'+self.type+'", "transaction_date": "'+self.transaction_date+'", "status": "'+self.status+'", "medium": "'+self.medium+'", "payer_id": "'+self.payer_id+'", "payee_id": "'+self.payee_id+'", "amount": '+str(self.amount)+', "description": "'+self.description+'" }'
-
-    def json(self):
-        return '{ "_id": "'+self.id+'", "type": "'+self.type+'", "transaction_date": "'+self.transaction_date+'", "status": "'+self.status+'", "medium": "'+self.medium+'", "payer_id": "'+self.payer_id+'", "payee_id": "'+self.payee_id+'", "amount": '+str(self.amount)+', "description": "'+self.description+'" }'
+        return '{ "_id": "'+self.ID+'", "type": "'+self.type+'", "transaction_date": "'+self.transaction_date+'", "status": "'+self.status+'", "medium": "'+self.medium+'", "payer_id": "'+self.payer_id+'", "payee_id": "'+self.payee_id+'", "amount": '+str(self.amount)+', "description": "'+self.description+'" }'
 
