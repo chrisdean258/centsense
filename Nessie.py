@@ -79,6 +79,23 @@ class Account:
         self.rewards = d["rewards"]
         self.custID = d["custID"]
 
+    def getbycust(self, cID):
+        url = "http://api.reimaginebanking.com/customers/{}/accounts?key={}".format(cID, apiKey)
+        person = requests.get(url)
+        self.good = True
+        if(person.status_code == 404):
+            self.good = False
+            return
+        json_data = json.loads(person.text);
+        self.accID = json_data["_id"]
+        self.type = json_data["type"]
+        self.balance = json_data["balance"]
+        self.nickname = json_data["nickname"]
+        self.rewards = json_data["rewards"]
+        self.custID = json_data["customer_id"]
+        json_data = json.loads(person.text);
+        self.parse_dict(json_data)
+        
 
 accID = "5828d214360f81f104553cc7" # valid for kelseys API key
 
