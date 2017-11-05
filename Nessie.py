@@ -2,7 +2,6 @@ import requests
 import json
 from Keys import key as apiKey
 
-
 class Customer:
     def __init__(self, ID):
         if(ID == ""):
@@ -48,6 +47,8 @@ class Customer:
 
 class Account:
     def __init__(self, accID):
+        if(accID == ""):
+            return
         url = "http://api.reimaginebanking.com/accounts/{}?key={}".format(accID, apiKey)
         person = requests.get(url)
         self.good = True
@@ -72,36 +73,34 @@ class Account:
         return accounts
 
     def parse_dict(self, d):
-        self.accID = d["_id"]
+        self.ID = d["_id"]
         self.type = d["type"]
         self.balance = d["balance"]
         self.nickname = d["nickname"]
         self.rewards = d["rewards"]
-        self.custID = d["custID"]
+        self.customer_id = d["customer_id"]
 
-    def getbycust(self, cID):
+    @staticmethod
+    def get_by_custID(cID):
+        if(cID == ""):
+            return []
         url = "http://api.reimaginebanking.com/customers/{}/accounts?key={}".format(cID, apiKey)
         person = requests.get(url)
-        self.good = True
-        if(person.status_code == 404):
-            self.good = False
-            return
+        if(person.status_code // 100 == 4):
+            return []
         json_data = json.loads(person.text);
-        self.accID = json_data["_id"]
-        self.type = json_data["type"]
-        self.balance = json_data["balance"]
-        self.nickname = json_data["nickname"]
-        self.rewards = json_data["rewards"]
-        self.custID = json_data["customer_id"]
-        json_data = json.loads(person.text);
-        self.parse_dict(json_data)
-        
+        rtn = []
+        for d in json_data:
+            newAccount = Account("")
+            newAccount.parse_dict(d)
+            rtn.append(newAccount)
+        return rtn
+
+    def json(self):
+        return '{ "_id": "' + self.ID + '", "type": "' + self.type + '", "balance": '+str(self.balance)+ ', "nickname": "' + self.nickname + '", "rewards": ' + str(self.rewards) + ', "customer_id": "' + self.customer_id + '" }'
 
 accID = "5828d214360f81f104553cc7" # valid for kelseys API key
-
 custID = "58278805360f81f10454851a" # valid for kelseys API key
-
-
 class Transfer:
     def __init__(self, ID):
         if(ID == ""):
@@ -127,7 +126,7 @@ class Transfer:
         self.description = "" if self.description is None else self.description
 
     @staticmethod
-    def get_transfers_by_account(custID):
+    def get_by_account(custID):
         url = "http://api.reimaginebanking.com/accounts/{}/transfers?key={}".format(custID, apiKey)
         transfers = requests.get(url)
         if(transfers.status_code // 100 == 4):
@@ -140,7 +139,17 @@ class Transfer:
             rtn.append(newTransfer)
         return rtn
 
+    @staticmethod
+    def get_by_custID(custID):
+        accounts = Account.get_by_custID(custID)
+        rtn = []
+        for account in accounts:
+            rtn += Transfer.get_by_account(account.ID)
+        return rtn
+
+
     def json(self):
         return '{ "_id": "'+self.id+'", "type": "'+self.type+'", "transaction_date": "'+self.transaction_date+'", "status": "'+self.status+'", "medium": "'+self.medium+'", "payer_id": "'+self.payer_id+'", "payee_id": "'+self.payee_id+'", "amount": '+str(self.amount)+', "description": "'+self.description+'" }'
 
-print("\n".join(t.json() for t in Transfer.get_transfers_by_account(accID)))
+print("\n".join(a.json() for a in Transfer.get_by_custID(custID)))
+
