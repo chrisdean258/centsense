@@ -151,4 +151,3 @@ class Transfer:
 
     def json(self):
         return '{ "_id": "'+self.ID+'", "type": "'+self.type+'", "transaction_date": "'+self.transaction_date+'", "status": "'+self.status+'", "medium": "'+self.medium+'", "payer_id": "'+self.payer_id+'", "payee_id": "'+self.payee_id+'", "amount": '+str(self.amount)+', "description": "'+self.description+'" }'
-
