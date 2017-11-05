@@ -1,25 +1,47 @@
 <script src = JS_Dependencies/Chart.bundle.min.js></script>
 <div class="chart-container" style="position: relative; height:40vh; width:50vw">
-<canvas id="line" width="400" height="200"></canvas>
+<canvas id="line" width="400" height="150"></canvas>
 </div>
 <div class="chart-container" style="position: relative; height:40vh; width:50vw">
-<canvas id="bar" width="400" height="200"></canvas>
+<canvas id="bar" width="400" height="150"></canvas>
+</div>
+<div class="chart-container" style="position: relative; height:40vh; width:50vw">
+<canvas id="yearlyline" width="400" height="150"></canvas>
+</div>
+<div class="chart-container" style="position: relative; height:40vh; width:50vw">
+<canvas id="yearlybar" width="400" height="150"></canvas>
 </div>
 <script>
 var line = document.getElementById("line").getContext('2d');
 var bar = document.getElementById("bar").getContext('2d');
+var yearlyline = document.getElementById("yearlyline").getContext('2d');
+var yearlybar = document.getElementById("yearlybar").getContext('2d');
 
-var goal = 200; //This is pulled from user
+var goal = 300; //This is the goal for the year pulled from user (could be give, save, invest, or spend goal)
+var goalyear = 2000; //This is the goal for the next __ years pulled from the user (could be give, save, invest, or spend goal);
+var numyears = 5; //This is the number of years in the goal
 var rand = 3; //Chooses color (0-7)
-var rand2 = 7;
-var x = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-var y = [21, 44, 71, 88, 171];//y values (do we sum them here or somehwere else?
+var rand2 = 4;
+var rand3 = 5;
+var rand4 = 6;
+var x = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']; //constant
+var xyear = [2017,2018,2019,2020,2021]; //5 year goal (could be changed by user?)
+var yline= [21, 44, 71, 88, 99]; //Sum vals incrementally (pulled from user)
+var ybar = [21, 23, 27, 17, 11]; //Month by month (pulled from user)
+var ylineyear = [400, 800, 1200, 1500, 2000]; //Sum vals incrementally
+var ybaryear = [400, 400, 400, 300, 500]; //Year by year
 var goalline = [goal, goal, goal, goal, goal, goal, goal, goal, goal, goal, goal, goal];
-var colors = ['#000080', '#89cff0', '#228b22', '#98ff98', '#ffff00', '#e6e6fa', '0d98ba', '#4c516d'];
+var goalbar = [goal/12, goal/12, goal/12, goal/12, goal/12, goal/12, goal/12, goal/12, goal/12, goal/12, goal/12, goal/12];
+var goallineyear = [goalyear, goalyear, goalyear, goalyear, goalyear];
+var goalbaryear = [goalyear/numyears, goalyear/numyears, goalyear/numyears, goalyear/numyears, goalyear/numyears];
+var colors = ['rgb(0,0,128', 'rgb(137,207,240', 'rgb(34,139,34', 'rgb(138,120,162', 'rgb(132,222,132', 'rgb(185,185,250',
+			  'rgb(238,232,170', 'rgb(13,152,186'];
 var bgcolor = 'rgb(255,255,255,0)';
 var dashcolor = 'rgb(0 0 0)';
-var dashwidth = [25,25];
+var dashwidth = [10,10];
 var nodot = 0;
+var name = "Monthly Saving"; //Needs to be changed for each chart
+var nameyear = "Yearly Saving"; //Same
 
 
 var linechart = new Chart(line, {
@@ -28,9 +50,9 @@ var linechart = new Chart(line, {
 		labels: x,
 		xAxisID: "Temp",
 		datasets: [{
-			data: y,
+			data: yline,
 			backgroundColor: bgcolor,
-			borderColor: colors[rand],
+			borderColor: colors[rand] + ')',
 			borderWidth: 5,
 		},
 		{
@@ -42,14 +64,14 @@ var linechart = new Chart(line, {
 			pointRadius: nodot,
 		},
 		{
-			data:[goal + 50],
+			data:[goal + 50], //50 is just some random number over goal
 			pointRadius: nodot,
 		}]
 	},
 	options: {
 		title: {
-			display: false,
-			text: "Test"
+			display: true,
+			text: name,
 		},
 		legend : {
 			display: false
@@ -74,25 +96,30 @@ var barchart = new Chart(bar, {
 	data: {
 		labels: x,
 		datasets: [{
-			data: y,
-			backgroundColor: colors[rand2],
-			borderColor: colors[rand2],
-			borderWidth: 5,
+			data: ybar,
+			backgroundColor: colors[rand2] + ', 0.5)',
+			borderColor: colors[rand2] + ')',
+			borderWidth: 2,
 		},
 		{
 			type: 'line',
-			data: goalline,
+			data: goalbar,
 			backgroundColor: bgcolor,
 			borderColor: dashcolor,
 			borderDash: dashwidth,
 			borderWidth: 2,
 			pointRadius: nodot,
+		},
+		{
+			type: 'line',
+			data: [goal/12 + 5], //5 is some random number over goal/12 (12 is # of months)
+			pointRadius: nodot,
 		}]
 	},
 	options: {
 		title: {
-			display: false,
-			text: "Test"
+			display: true,
+			text: name
 		},
 		legend : {
 			display: false
@@ -106,6 +133,111 @@ var barchart = new Chart(bar, {
 				ticks: {
 					beginAtZero:true
 				}
+			}]
+		}
+	 }
+});
+
+var yearlylinechart = new Chart(yearlyline, {
+	type: 'line',
+	data: {
+		labels: xyear,
+		xAxisID: "Temp",
+		datasets: [{
+			data: ylineyear,
+			backgroundColor: bgcolor,
+			borderColor: colors[rand3] + ')',
+			borderWidth: 5,
+		},
+		{
+			data: goallineyear,
+			backgroundColor: bgcolor,
+			borderColor: dashcolor,
+			borderDash: dashwidth,
+			borderWidth: 2,
+			pointRadius: nodot,
+		},
+		{
+			data:[goalyear + 100], //1000 is some random # over goalyear
+			pointRadius: nodot,
+		}]
+	},
+	options: {
+		title: {
+			display: true,
+			text: nameyear,
+		},
+		legend : {
+			display: false,
+		},
+		scales: {
+			yAxes: [{
+				scaleLabel : {
+					display: true,
+					labelString: 'Dollars',
+				},
+				ticks: {
+					beginAtZero:true
+				},
+			}],
+			xAxes: [{
+				scaleLabel: {
+					display: true,
+					labelString: 'Years',
+				}
+			}]
+		}
+	 }
+});
+
+var yearlybarchart = new Chart(yearlybar, {
+	type: 'bar',
+	data: {
+		labels: xyear,
+		datasets: [{
+			data: ybaryear,
+			backgroundColor: colors[rand4] + ', 0.5)',
+			borderColor: colors[rand4] + ')',
+			borderWidth: 2,
+		},
+		{
+			type: 'line',
+			data: goalbaryear,
+			backgroundColor: bgcolor,
+			borderColor: dashcolor,
+			borderDash: dashwidth,
+			borderWidth: 2,
+			pointRadius: nodot,
+		},
+		{
+			type: 'line',
+			data: [goalyear/numyears + 20],
+			pointRadius: nodot,
+		}]
+	},
+	options: {
+		title: {
+			display: true,
+			text: nameyear
+		},
+		legend : {
+			display: false
+		},
+		scales: {
+			yAxes: [{
+				scaleLabel : {
+					display: true,
+					labelString: 'Dollars',
+				},
+				ticks: {
+					beginAtZero:true
+				}
+			}],
+			xAxes: [{
+				scaleLabel: {
+					display: true,
+					labelString: 'Year',
+				},
 			}]
 		}
 	 }
