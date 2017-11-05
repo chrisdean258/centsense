@@ -12,7 +12,7 @@ def get_user(user, password):
     cur = db.cursor()
 
     # Use all the SQL you like
-    cur.execute("SELECT NesID FROM auth")
+    cur.execute("SELECT NesID FROM auth WHERE userName='"+ user +"' AND Password='"+ password+"'")
 
     # print all the first cell of all the rows
     rtn = ""
@@ -24,4 +24,5 @@ def get_user(user, password):
     return rtn
 
 if __name__ == "__main__":
-    get_user("", "")
+    get_user("","")
+    #get_user("colsarcol", "abc123")
