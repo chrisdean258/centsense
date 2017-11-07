@@ -1,5 +1,25 @@
 <!DOCTYPE html>
-<html> <title>W3.CSS Template</title>
+<style>
+.center {
+	margin: auto;
+	width: 125%;
+	padding: 10px;
+}
+.container {
+	    position: relative;
+	    width: 110%;
+	    overflow: hidden; /*To get your parent to respect the floated divs*/
+}
+
+.one, .two{
+	    position: relative;
+	    width: 50%; /*Because you only have 3 elements (100 divided by 3)*/
+	    height: 100%;
+            float: left; /*To get them next to each other if all else fails*/
+}
+</style>
+
+<html> <title>CENTSense</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -11,18 +31,18 @@
   
   <!-- Navbar (placed at the bottom of the header image) -->
   <div class="w3-bar w3-light-grey w3-round w3-display-bottommiddle w3-hide-small" style="bottom:-16px">
-    <a href="#" class="w3-bar-item w3-button">Home</a>
-    <a href="#portfolio" class="w3-bar-item w3-button">Portfolio</a>
-    <a href="#contact" class="w3-bar-item w3-button">Contact</a>
+    <a href="#" class="w3-bar-item w3-button">Monthly</a>
+    <a href="hcPage.html" class="w3-bar-item w3-button">Yearly</a>
+    <!--<a href="#Profile" class="w3-bar-item w3-button">Contact</a>-->
   </div>
 </header>
 
 <!-- Navbar on small screens -->
 <div class="w3-center w3-light-grey w3-padding-16 w3-hide-large w3-hide-medium">
 <div class="w3-bar w3-light-grey">
-  <a href="#" class="w3-bar-item w3-button">Home</a>
+  <a href="#" class="w3-bar-item w3-button">Monthly</a>
   <a href="#portfolio" class="w3-bar-item w3-button">Portfolio</a>
-  <a href="#contact" class="w3-bar-item w3-button">Contact</a>
+  <!--<a href="#contact" class="w3-bar-item w3-button">Contact</a>-->
 </div>
 </div>
 <!-- Page content -->
@@ -36,21 +56,30 @@
   <img src="http://web.utk.edu/~cmawhinn/centexistentialpig.png" alt="Mountains" class="w3-image w3-margin-top" width="1000" height="500">
   -->
 
+  <div class="container">
   <script src = JS_Dependencies/Chart.bundle.min.js></script>
+  <div class="one">
   <div class="graphcontainer" style="height:40vh; width:40vw; display: inline-block">
     <canvas id="save" width="400" height="200"></canvas>
   </div>
+  </div>
+  <div class="two">
   <div class="graphcontainer" style="height:40vh; width:40vw; display: inline-block">
     <canvas id="spend" width="400" height="200 "></canvas>
   </div>
+  </div>
+  </div>
+  <div class="container">
+  <div class="one">
   <div class="graphcontainer" style="height:40vh; width:40vw; display: inline-block">
     <canvas id="earn" width="400" height="200"></canvas>
   </div>
+  </div>
+  <div class="two">
   <div class="graphcontainer" style="height:40vh; width:40vw; display: inline-block">
     <canvas id="give" width="400" height="200"></canvas>
   </div>
-
-
+</div>
 <script>
 var goal = 300; //This is the goal for the year pulled from user (could be give, save, invest, or spend goal)
 var goalyear = 4000; //This is the goal for the next __ years pulled from the user (could be give, save, invest, or spend goal);
@@ -63,7 +92,8 @@ var x = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', '
 var xyear = [2017,2018,2019,2020,2021]; //5 year goal (could be changed by user?)
 var yline= [21, 44, 71, 88, 99, 130, 146, 150]; //Sum vals incrementally (pulled from user)
 var ybar = [121, 123, 127, 117, 111, 131, 116, 104]; //Month by month (pulled from user)
-var ylineyear = [400, 800, 1200, 1500, 2000, 2300, 2800, 3250]; //Sum vals incrementally
+//var ylineyear = [400, 800, 1200, 1500, 2000, 2300, 2800, 3250]; //Sum vals incrementally
+var ylineyear = [2900, 3100, 3100, 2800, 2300, 2900, 2800, 3250]; //Sum vals incrementally
 var ybaryear = [40, 40, 40, 30, 50]; //Year by year
 var goalline = [goal, goal, goal, goal, goal, goal, goal, goal, goal, goal, goal, goal];
 goal += 1200

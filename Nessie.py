@@ -41,6 +41,7 @@ class Customer:
         self.state = d["address"]["state"]
         self.city = d["address"]["city"]
         self.street_name = d["address"]["street_name"]
+        print(self.json())
 
     def json(self):
         return '{ "_id": "' + self.ID + '", "first_name": "' + self.first_name + '", "last_name": "' + self.last_name + '", "address": { "street_number": "' + self.street_number + '", "street_name": "' + self.street_name + '", "city": "' + self.city + '", "state": "' + self.state + '", "zip": "' + self.zip + '" } }'
@@ -79,6 +80,7 @@ class Account:
         self.nickname = d["nickname"]
         self.rewards = d["rewards"]
         self.customer_id = d["customer_id"]
+        print(self.json())
 
     @staticmethod
     def get_by_custID(cID):
@@ -124,6 +126,7 @@ class Transfer:
         self.amount = d["amount"]
         self.description = d["description"]
         self.description = "" if self.description is None else self.description
+        print(self.json())
 
     @staticmethod
     def get_by_account(custID):

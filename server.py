@@ -14,8 +14,8 @@ def login_success(nesID):
     return send_file("index2.html")
 
 
-@app.route('/static')
-def stat():
+@app.route('/hc')
+def hc():
     return send_file('static.html')
 
 @app.route('/JS_Dependencies/Chart.bundle.min.js')
@@ -33,6 +33,17 @@ def index():
 @app.route('/hello')
 def hello_world():
     return 'Hello World!'
+
+@app.route('/hcPage.html')
+def hcpage():
+    return send_file("hcPage.html")
+
+@app.route('/<page>')
+def js_page2(page):
+    try:
+        return send_file(page)
+    except:
+        print(page+" not found")
 
 @app.route('/login', methods = ['POST'])
 def POST_login():

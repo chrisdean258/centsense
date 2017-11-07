@@ -8,6 +8,9 @@ client = Client(account_sid, auth_token)
 client.messages.create(
     to = "+17315923281",
     from_ = "+12702165035",
-    body = "CENTSense here! We just wanted to remind you that your income
-    will be split between savings (20%) and charity (10%) in a few days."
+    body = """CENTSense here!
+
+    We just wanted to remind you that your income will be split between savings (20%) and charity (10%) in a few days.
+
+    The total left over for the month is $500."""
 )
